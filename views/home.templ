@@ -1,0 +1,65 @@
+package views
+
+import (
+	"fmt"
+)
+
+type Link struct {
+	Name string
+	Href string
+}
+
+type Post struct {
+	Title   string
+	Content string
+	ID      uint64
+}
+
+templ MakeNavBar(links []Link) {
+	<header>
+		<nav>
+			<ul>
+				for _, link := range links{
+					<li><a href={templ.URL(link.Href)}>{link.Name}</a></li>
+				}
+			</ul>
+		</nav>
+	</header>
+	</br>
+}
+
+templ MakeFooter() {
+}
+
+templ MakeHome(posts []Post) {
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <title>Home Page</title>
+            <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+            <script src="/static/htmx.min.js"></script>
+            <script src="/static/client-side-templates.js"></script>
+        </head>
+        <body>
+            @MakeNavBar([]Link{
+                {Name: "Home", Href: "/"},
+                {Name: "About", Href: "/about"},
+                {Name: "Services", Href: "/services"},
+                {Name: "Contact", Href: "/contact"},
+            })
+            <main>
+                for _, post := range posts {
+                    <article>
+                        <h2>{ post.Title }</h2>
+                        <p>
+                            { post.Content }
+                            <a href={ templ.URL("/post/" + fmt.Sprint("%d", post.ID)) }>read more...</a>
+                        </p>
+                    </article>
+                }
+            </main>
+            @MakeFooter()
+        </body>
+    </html>
+}
