@@ -24,4 +24,9 @@ go.work.sum
 # env file
 .env
 
+# system files
 .DS_Store
+
+# sonarqube
+.sonar_lock
+report-task.txt
